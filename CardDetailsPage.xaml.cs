@@ -16,18 +16,15 @@ using System.Windows.Shapes;
 namespace TaskTracker
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CardDetailsPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CardDetailsPage : Page
     {
-
-        public MainWindow()
+        public CardDetailsPage(OBJ_Card bindedCardObject)
         {
             InitializeComponent();
+            this.DataContext = bindedCardObject;
 
-            SocketClient.StartClient();
-
-            Application.Current.Properties["CurrentUser"] = new OBJ_User() { Username = "user1", Password = "pass" };
         }
     }
 }

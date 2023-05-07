@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="TaskTracker.BoardCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TaskTracker"
+             mc:Ignorable="d" 
+             d:DesignHeight="180" d:DesignWidth="250">
+    <Border x:Name="CardMainContainer" Height="140" Padding="8" BorderThickness="2" CornerRadius="3" Margin="4,4,4,4" Background="White" BorderBrush="#ff8877ff" MouseEnter="CardMainContainer_MouseEnter" MouseLeave="CardMainContainer_MouseLeave">
+        <Border.Effect>
+            <DropShadowEffect x:Name="MainContainerShadow" BlurRadius="8" Color="Black" Opacity="0.5" Direction="-90" ShadowDepth="0"/>
+        </Border.Effect>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ValueStates">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="MouseOver">
+                    <Storyboard>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CardMainContainer" Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.ShadowDepth)" BeginTime="00:00:00">
+                            <SplineDoubleKeyFrame KeyTime="0:0:0.1" Value="5"/>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="24"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Style="{DynamicResource TextBoxStyle_Main}" Text="{Binding Title, Mode = OneWay}" FontSize="14" MaxLength="9"></TextBox>
+            <TextBlock Grid.Row="1" Margin="0, 6, 0, 0" Text="{Binding Description, Mode = OneWay}" FontSize="14" Foreground="#666666"></TextBlock>
+        </Grid>
+    </Border>
+</UserControl>

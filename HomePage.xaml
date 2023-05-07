@@ -1,0 +1,23 @@
+﻿<Page x:Class="TaskTracker.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TaskTracker"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HomePage" Background="AliceBlue">
+    <Grid Margin="8,8,8,8">
+        <Border Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6">
+            <Grid>
+                <StackPanel x:Name="ToolBarStackPanel" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource ButtonStyle_Main}" Content="&#xE109;"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <ScrollViewer Margin="0,41,0,0">
+            <StackPanel x:Name="MainHorizontalStackPanel">
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>
