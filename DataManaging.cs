@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Documents;
+using System.Data.Common;
 
 namespace TaskTracker
 {
@@ -29,11 +30,11 @@ namespace TaskTracker
     // Класс "Доска"
     public class OBJ_Board
     {
-        public string ID { get; set; }
-        public string Title { get; set; }
+        public string ID { get; set; } = Utilities.GetRandomString(6);
+        public string Title { get; set; } = "Новая доска";
         public OBJ_User Owner { get; set; }
-        public List<OBJ_User> UsersCanView { get; set; }
-        public List<OBJ_User> UsersCanEdit { get; set; }
+        public List<OBJ_User> UsersCanView { get; set; } = new List<OBJ_User>();
+        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>();
         public OBJ_Board()
         {
         }
@@ -206,13 +207,13 @@ namespace TaskTracker
             for (int i = 0; i < table.Table.Count; i++)
             {
                 var usersCanViewList = new List<OBJ_User>();
-                foreach (var username in table.GetAt(i, "users_can_view").Split(','))
+                foreach (var username in table.GetAt(i, "users_can_view").Split(',').ToList().FindAll(e => e != ""))
                 {
                     OBJ_User tempUser = DatabaseCommunicator.GET_Users($"username|=|{username}")[0];
                     usersCanViewList.Add(tempUser);
                 }
                 var usersCanEditList = new List<OBJ_User>();
-                foreach (var username in table.GetAt(i, "users_can_edit").Split(','))
+                foreach (var username in table.GetAt(i, "users_can_edit").Split(',').ToList().FindAll(e => e != ""))
                 {
                     OBJ_User tempUser = DatabaseCommunicator.GET_Users($"username|=|{username}")[0];
                     usersCanEditList.Add(tempUser);
@@ -263,12 +264,13 @@ namespace TaskTracker
             {
                 // Составляем список пользователей
                 var usersCanEditList = new List<OBJ_User>();
-                foreach (var username in table.GetAt(i, "users_can_edit").Split(',').ToList().FindAll(e => e != ""))
+                foreach (var username in table.GetAt(i, "users_can_edit").Split(',').ToList().FindAll(e => e != "")) // Фильтруем, чтобы пустых строк не было, а то всё полетит
                 {
                     // Запрос с пользователем в БД и добавление в список card.UsersCanEdit
                     OBJ_User tempUser = DatabaseCommunicator.GET_Users($"username|=|{username}")[0];
                     usersCanEditList.Add(tempUser);
                 }
+                // Создаем новый объект карточки
                 OBJ_Card currentCard = new OBJ_Card()
                 {
                     ID = table.GetAt(i, "id"),
@@ -290,10 +292,47 @@ namespace TaskTracker
             return new OBJ_TaskListItem[0];
         }
 
+        // Создать новый файл в базе данных с указанным названием и заголовком (названиями столбцов)
+        public static bool ADD_Board(OBJ_Board board)
+        {
+            if (board == null) { return false; }
+            // Создание списка имён пользователей с доступом на просмотр доски
+            List<string> usersCanViewUsernames = new List<string>();
+            foreach (var user in board.UsersCanView) { usersCanViewUsernames.Add(user.Username); }
+            // Создание списка имён пользователей с доступом на редактирование доски
+            List<string> usersCanEditUsernames = new List<string>();
+            foreach (var user in board.UsersCanEdit) { usersCanEditUsernames.Add(user.Username); }
+            // Делаем массив с компонентами запроса в БД
+            List<string> tempStringComponents = new List<string>
+            {
+                board.ID,
+                board.Title,
+                board.Owner.Username,
+                String.Join(',', usersCanViewUsernames),
+                String.Join(',', usersCanEditUsernames)
+            };
+            // Соединяем всё воедино
+            string tempString = String.Join('|', tempStringComponents);
+            // Отправляем
+            string recieved = SocketClient.Send($"DB¶boards¶ADD¶{tempString}");
+            if (recieved == "<OK>") // Доска добавилась в таблицу досок
+            {
+                // Отправляем запросы на создание файлов с карточками, столбцами и задачами новой доски
+                recieved = SocketClient.Send($"DB¶DB_CREATE¶{board.ID}_cards¶id|position|owner|users_can_edit|title|description|color|images|task_ids");
+                recieved = SocketClient.Send($"DB¶DB_CREATE¶{board.ID}_columns¶id|position|title|card_ids");
+                recieved = SocketClient.Send($"DB¶DB_CREATE¶{board.ID}_tasks¶id|text|done");
+                return true;
+            }
+            else return false;
+        }
+
+        // ADD_Column
+
         // Добавить карточку в базу указанной колонки
-        public static bool ADD_Card(string boardID, OBJ_Column column, OBJ_Card card)
+        public static bool ADD_Card(OBJ_Board board, OBJ_Column column, OBJ_Card card)
         {
             if (card == null) { return false; }
+            // Создание списка имён пользователей с доступом на редактирование карточки
             List<string> usersCanEditUsernames = new List<string>();
             foreach (var user in card.UsersCanEdit) { usersCanEditUsernames.Add(user.Username); }
             // Делаем массив с компонентами запроса в БД
@@ -312,20 +351,65 @@ namespace TaskTracker
             // Соединяем всё воедино
             string tempString = String.Join('|', tempStringComponents);
             // Отправляем
-            string recieved = SocketClient.Send($"DB¶{boardID}_cards¶ADD¶{tempString}");
+            string recieved = SocketClient.Send($"DB¶{board.ID}_cards¶ADD¶{tempString}");
             if (recieved == "<OK>") // Карточка добавилась в файл с карточками
             {
                 // Добавляем ID карточки в столбец в файле со столбцами
-                recieved = SocketClient.Send($"DB¶{boardID}_columns¶SET¶{column.ID}->card_ids->{String.Join(',', column.CardIDs)}");
+                recieved = SocketClient.Send($"DB¶{board.ID}_columns¶SET¶{column.ID}->card_ids->{String.Join(',', column.CardIDs)}");
                 if (recieved == "<OK>") return true;
                 else
                 {
                     // Если вторая операция не вышла, то отменяем первую
-                    recieved = SocketClient.Send($"DB¶{boardID}_cards¶DEL¶{card.ID}");
+                    recieved = SocketClient.Send($"DB¶{board.ID}_cards¶DEL¶{card.ID}");
                     return false;
                 }
             }
             else return false;
         }
+
+        // ADD_Task
+
+        // Добавить карточку в базу указанной колонки
+        private static bool SET(string filename, string id, string column, string newValue)
+        {
+            string recieved = SocketClient.Send($"DB¶{filename}¶SET¶{id}->{column}->{newValue}");
+            if (recieved == "<OK>") return true;
+            else return false;
+        }
+        
+        // UPDATE_Board
+        // UPDATE_Column
+
+        public static bool UPDATE_Card(OBJ_Board board, OBJ_Column column, OBJ_Card card)
+        {
+            // Создание списка имён пользователей с доступом на редактирование карточки
+            List<string> usersCanEditUsernames = new List<string>();
+            foreach (var user in card.UsersCanEdit) { usersCanEditUsernames.Add(user.Username); }
+            // Делаем массив с компонентами запроса в БД
+            List<string> tempStringComponents = new List<string>
+            {
+                $"{card.ID}->position->{card.Position.ToString()}",
+                $"{card.ID}->owner->{card.Owner.Username}",
+                $"{card.ID}->users_can_edit->{String.Join(',', usersCanEditUsernames)}",
+                $"{card.ID}->title->{card.Title}",
+                $"{card.ID}->description->{card.Description}",
+                $"{card.ID}->color->{ColorTranslator.ToHtml(card.Color)}",
+                $"{card.ID}->images->{String.Join(',', card.Images)}",
+                $"{card.ID}->task_ids->{String.Join(',', card.TaskListIDs)}"
+            };
+            // Соединяем всё воедино
+            string tempString = String.Join('|', tempStringComponents);
+            // Отправляем
+            string recieved = SocketClient.Send($"DB¶{board.ID}_cards¶SET¶{tempString}");
+            if (recieved == "<OK>") return true;
+            else return false;
+        }
+
+        // UPDATE_Task
+
+        // DEL_Board
+        // DEL_Column
+        // DEL_Card
+        // DEL_Task
     }
 }

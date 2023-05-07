@@ -11,7 +11,7 @@
         <Border Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6">
             <Grid>
                 <StackPanel x:Name="ToolBarStackPanel" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource ButtonStyle_Main}" Content="&#xE109;"/>
+                    <Button x:Name="Button_AddBoard" Style="{StaticResource ButtonStyle_Main}" Content="&#xE109;" Click="Button_AddBoard_Click" IsEnabled="False"/>
                 </StackPanel>
             </Grid>
         </Border>

@@ -27,7 +27,13 @@ namespace TaskTracker
 
             SocketClient.StartClient();
 
+            // Если поставить это, то права на редактирование/просмотр будут у всех пользователей
+            Application.Current.Properties["AllUsers"] = new OBJ_User() { Username = "*", Password = "*" };
+
+            // Задание текущего пользователя
+            // То есть запись его в некую глобальную переменную Application.Current.Properties["CurrentUser"]
             Application.Current.Properties["CurrentUser"] = new OBJ_User() { Username = "user1", Password = "pass" };
+
         }
     }
 }

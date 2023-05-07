@@ -44,7 +44,7 @@ namespace TaskTracker
 
             // Привязка карточки к столбцу и запрос на добавление
             Column.CardIDs.Add(tempCard.ID);
-            bool result = DatabaseCommunicator.ADD_Card(Board.ID, Column, tempCard);
+            bool result = DatabaseCommunicator.ADD_Card(Board, Column, tempCard);
             if (result == true)
             {
                 AddCard(tempCard); // Удалось добавить в БД, добавляем элемент карточки на страницу
