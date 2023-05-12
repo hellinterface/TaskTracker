@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +35,7 @@ namespace TaskTracker
             CardClickFunction = cardClickFunction;
             this.DataContext = column;
             this.IsViewingUser_CanEdit = IsViewingUser_CanEdit;
-
+// если пользователь может вносить изменения, то кнопки существуют, иначе кнопки не работают/исчезают
             if (IsViewingUser_CanEdit == true)
             {
                 this.TopButton_Left.Click += (sender, e) => ParentPage.MoveColumnElementLeft(this);
