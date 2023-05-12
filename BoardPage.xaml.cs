@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace TaskTracker
 
 
 
-            if (currentUser.Username == Board.Owner.Username)
+            if (currentUser.Username == Board.Owner.Username) // владелец илии нет
             {
                 IsViewingUser_Owner = true;
                 IsViewingUser_CanEdit = true;
