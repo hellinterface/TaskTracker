@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TaskTracker"
              mc:Ignorable="d" 
-             d:DesignHeight="180" d:DesignWidth="250">
-    <Border x:Name="CardMainContainer" Height="140" Padding="8" BorderThickness="2" CornerRadius="3" Margin="4,4,4,4" Background="White" BorderBrush="#ff8877ff" MouseEnter="CardMainContainer_MouseEnter" MouseLeave="CardMainContainer_MouseLeave">
+             d:DesignHeight="220" d:DesignWidth="300">
+    <Border x:Name="CardMainContainer" Height="160" Padding="8" BorderThickness="2" CornerRadius="3" Margin="4,4,4,4" Background="White" BorderBrush="#ff8877ff" MouseEnter="CardMainContainer_MouseEnter" MouseLeave="CardMainContainer_MouseLeave">
         <Border.Effect>
             <DropShadowEffect x:Name="MainContainerShadow" BlurRadius="8" Color="Black" Opacity="0.5" Direction="-90" ShadowDepth="0"/>
         </Border.Effect>
