@@ -9,12 +9,6 @@
       Title="CardDetailsPage" Background="AliceBlue">
 
     <Grid>
-        <Label Content="Подробности карточки" Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,41,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Label Content="{Binding Title, Mode = OneWay}" Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,101,0,0" VerticalAlignment="Top"/>
-        <Label Content="Выше - пример байндинга значений на примере поля Title." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,160,0,0" VerticalAlignment="Top"/>
-        <Label Content="Нужно удалить эти элементы Label." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,225,0,0" VerticalAlignment="Top"/>
-        <Label Content="Верхнюю панельку скопируйте с другой страницы и адаптируйте." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,293,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.556"/>
-        <Label Content="В контейнере справа должны создаваться задачи (TaskListItem)." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,353,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.556"/>
         <Border Width="160" Height="400" HorizontalAlignment="Right" Margin="0,-1,30,0" CornerRadius="3" Background="DarkSlateBlue">
             <ScrollViewer>
                 <StackPanel x:Name="TaskListContainer">
