@@ -163,6 +163,7 @@ namespace TaskTracker
             {
                 throw new Exception();
             }
+            // разделение на ячейки
             Header = rows[0].Split('|').ToList();
             for (int i = 1; i < rows.Length; i++)
             {
