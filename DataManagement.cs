@@ -61,7 +61,7 @@ namespace TaskTracker
         public List<OBJ_Card> Cards { get; set; } = new List<OBJ_Card>();
         public List<string> CardIDs
         {
-            get
+            get // выдает id карточек, которые есть в столбце
             {
                 List<string> result = new List<string>();
                 foreach (var card in Cards) result.Add(card.ID);
@@ -122,9 +122,9 @@ namespace TaskTracker
     public class OBJ_Image
     {
         public string ID { get; init; } = Utilities.GetRandomString(6);
-        public BitmapImage BitmapImage { get; protected set; }
+        public BitmapImage BitmapImage { get; protected set; }// само изображение
         private string base64;
-        public string Base64 { 
+        public string Base64 { // закодированное изображение
             get
             {
                 return base64;
@@ -148,6 +148,7 @@ namespace TaskTracker
     static class Utilities
     {
         // Сгенерировать случайную строку заданной длины.
+        // нужно для идентификаторов столбцов
         public static string GetRandomString(int length)
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -266,7 +267,7 @@ namespace TaskTracker
             return String.Join('¶', components);
         }
 
-        // Получить пользователей с укзанными критериями
+        // Получить пользователей с укзанным одним критерием
         public static OBJ_User[] GET_Users(string criteria)
         {
             string recieved = SocketClient.Send($"DB¶users¶GET¶{criteria}");
@@ -647,7 +648,7 @@ namespace TaskTracker
 
         // ADD_Task
 
-        // Добавить карточку в базу указанной колонки
+        // Поставить указанные значения в указанное местопросмотр
         private static bool SET(string filename, string id, string column, string newValue)
         {
             string recieved = SocketClient.Send(MakeQuery(new string[] { "DB", filename, "SET", $"{id}->{column}->{newValue}" }));
@@ -657,10 +658,10 @@ namespace TaskTracker
 
         public static bool UPDATE_Board(OBJ_Board board)
         {
-            // Создание списка имён пользователей с доступом на редактирование карточки
+            // Создание списка имён пользователей с доступом на просмотр доски
             List<string> usersCanViewUsernames = new List<string>();
             foreach (var user in board.UsersCanView) { usersCanViewUsernames.Add(user.Username); }
-            // Создание списка имён пользователей с доступом на редактирование карточки
+            // Создание списка имён пользователей с доступом на редактирование доски
             List<string> usersCanEditUsernames = new List<string>();
             foreach (var user in board.UsersCanEdit) { usersCanEditUsernames.Add(user.Username); }
             // Делаем массив с компонентами запроса в БД
