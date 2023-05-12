@@ -6,17 +6,27 @@
       xmlns:local="clr-namespace:TaskTracker"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="BoardPage" Background="AliceBlue">
+      Title="BoardPage" Background="#eeeeff">
     <Grid Margin="8,8,8,8">
-        <Border Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6" Margin="0,0,0,8">
             <Grid>
-                <StackPanel x:Name="ToolBarStackPanel" Orientation="Horizontal">
-                    <Button Style="{StaticResource ButtonStyle_Main}" Margin="0,0,6,0" Click="Button_Click"></Button>
-                    <TextBox Style="{StaticResource TextBoxStyle_BoardTitle}" Margin="0,0,6,0" Width="240">Board title</TextBox>
-                </StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="48"></ColumnDefinition>
+                    <ColumnDefinition Width="48"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="TopButton_GoBack" ToolTip="Назад" Style="{StaticResource ButtonStyle_MainIcon}" Margin="0,0,6,0" Click="Button_Click"></Button>
+                <TextBox Grid.Column="1" x:Name="TextBox_BoardTitle" ToolTip="Название доски" Text="{Binding Title, Mode = OneWay}" Style="{StaticResource TextBoxStyle_BoardTitle}" Margin="0,0,6,0" Width="240" HorizontalAlignment="Left" LostFocus="TextBox_BoardTitle_LostFocus"></TextBox>
+                <Button Grid.Column="2" x:Name="TopButton_AddColumn" ToolTip="Добавить столбец" Style="{StaticResource ButtonStyle_MainIcon}" Margin="6,0,0,0" Click="TopButton_AddColumn_Click"></Button>
+                <Button Grid.Column="3" x:Name="TopButton_AccessSettings" ToolTip="Настройки доски"  Style="{StaticResource ButtonStyle_MainIcon}" Margin="6,0,0,0" Click="TopButton_AccessSettings_Click"></Button>
             </Grid>
         </Border>
-        <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,41,0,0" Grid.ColumnSpan="2">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled">
             <StackPanel x:Name="MainHorizontalStackPanel" Orientation="Horizontal">
             </StackPanel>
         </ScrollViewer>

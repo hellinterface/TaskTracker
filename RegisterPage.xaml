@@ -6,9 +6,25 @@
       xmlns:local="clr-namespace:TaskTracker"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="RegisterPage">
-
+      Title="RegisterPage" Background="#eeeeff">
     <Grid>
-        
+        <Border Background="#ffccccff" BorderThickness="0" CornerRadius="3" Height="300" Padding="12 24" Width="250" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Имя пользователя" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center"></TextBlock>
+                <TextBox x:Name="TextBox_Username" Grid.Row="1" Style="{StaticResource TextBoxStyle_Main}" Height="36"></TextBox>
+                <TextBlock Grid.Row="2" Text="Пароль" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center"></TextBlock>
+                <TextBox x:Name="TextBox_Password" Grid.Row="3" Style="{StaticResource TextBoxStyle_Main}" Height="36"></TextBox>
+                <Button x:Name="Button_OK" Grid.Row="4" Style="{StaticResource ButtonStyle_Main}" Height="36" Content="Зарегистрироваться" Click="Button_OK_Click"></Button>
+                <Button x:Name="Button_ToLogin" Grid.Row="5" Style="{StaticResource ButtonStyle_Main}" Height="36" Content="Назад" Click="Button_ToLogin_Click"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

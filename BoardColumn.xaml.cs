@@ -21,15 +21,44 @@ namespace TaskTracker
     public partial class BoardColumn : UserControl
     {
         private OBJ_Board Board;
-        private OBJ_Column Column;
+        public OBJ_Column ColumnObject { get; }
+        private BoardPage ParentPage;
         private Action<BoardCard, MouseButtonEventArgs> CardClickFunction;
+        private bool IsViewingUser_CanEdit;
 
-        public BoardColumn(OBJ_Board board, OBJ_Column column, Action<BoardCard, MouseButtonEventArgs> cardClickFunction)
+        public BoardColumn(BoardPage parentPage, OBJ_Board board, OBJ_Column column, Action<BoardCard, MouseButtonEventArgs> cardClickFunction, bool IsViewingUser_CanEdit)
         {
             InitializeComponent();
             Board = board;
-            Column = column;
+            ColumnObject = column;
+            ParentPage = parentPage;
             CardClickFunction = cardClickFunction;
+            this.DataContext = column;
+            this.IsViewingUser_CanEdit = IsViewingUser_CanEdit;
+
+            if (IsViewingUser_CanEdit == true)
+            {
+                this.TopButton_Left.Click += (sender, e) => ParentPage.MoveColumnElementLeft(this);
+                this.TopButton_Right.Click += (sender, e) => ParentPage.MoveColumnElementRight(this);
+                this.TopButton_DeleteColumn.Click += (sender, e) => ParentPage.DeleteColumn(this);
+            }
+            else
+            {
+                this.TopButtonContainer.Visibility = Visibility.Collapsed;
+                this.TopButton_AddCard.IsEnabled = false;
+                this.TopButton_Left.IsEnabled = false;
+                this.TopButton_Right.IsEnabled = false;
+                this.TopButton_DeleteColumn.IsEnabled = false;
+                this.TextBox_ColumnTitle.IsEnabled = false;
+            }
+
+            // Добавление карточек в текущий создаваемый столбец
+            List<OBJ_Card> allCards = ColumnObject.Cards.ToList();
+            allCards = allCards.OrderBy(entry => entry.Position).ToList();
+            foreach (var card in allCards)
+            {
+                var cardElement = AddCardElement(card);
+            }
         }
 
         // Нажатие кнопки "Добавить карточку"
@@ -38,30 +67,94 @@ namespace TaskTracker
             // Создание нового объекта карточки
             var tempCard = new OBJ_Card()
             {
-                Position = Column.CardIDs.Count,
+                Position = ColumnObject.Cards.Count,
                 Owner = Application.Current.Properties["CurrentUser"] as OBJ_User
             };
 
             // Привязка карточки к столбцу и запрос на добавление
-            Column.CardIDs.Add(tempCard.ID);
-            bool result = DatabaseCommunicator.ADD_Card(Board, Column, tempCard);
+            ColumnObject.Cards.Add(tempCard);
+            bool result = DatabaseCommunicator.ADD_Card(Board, ColumnObject, tempCard);
             if (result == true)
             {
-                AddCard(tempCard); // Удалось добавить в БД, добавляем элемент карточки на страницу
+                AddCardElement(tempCard); // Удалось добавить в БД, добавляем элемент карточки на страницу
             }
             else
             {
-                Column.CardIDs.Remove(tempCard.ID); // Не удалось, тогда отменяем привязку
+                ColumnObject.Cards.Remove(tempCard); // Не удалось
             }
         }
 
         // Добавление элемента карточки
-        public BoardCard AddCard(OBJ_Card cardObject)
+        public BoardCard AddCardElement(OBJ_Card cardObject)
         {
-            var newCardElement = new BoardCard(cardObject);
-            newCardElement.MouseDown += (sender, e) => this.CardClickFunction(sender as BoardCard, e);
+            var newCardElement = new BoardCard(Board, cardObject);
+            newCardElement.MouseDown += (sender, e) => this.CardClickFunction(newCardElement, e);
+            if (IsViewingUser_CanEdit == true)
+            {
+                newCardElement.Button_Left.Click += (sender, e) => ParentPage.MoveCardLeft(this, newCardElement);
+                newCardElement.Button_Right.Click += (sender, e) => ParentPage.MoveCardRight(this, newCardElement);
+                newCardElement.Button_Up.Click += (sender, e) => this.MoveCardElementUp(newCardElement);
+                newCardElement.Button_Down.Click += (sender, e) => this.MoveCardElementDown(newCardElement);
+            }
+            else
+            {
+                newCardElement.Button_Left.Visibility = Visibility.Collapsed;
+                newCardElement.Button_Right.Visibility = Visibility.Collapsed;
+                newCardElement.Button_Up.Visibility = Visibility.Collapsed;
+                newCardElement.Button_Down.Visibility = Visibility.Collapsed;
+            }
             this.CardList.Children.Add(newCardElement);
             return newCardElement;
+        }
+
+        // Удаление элемента карточки
+        public OBJ_Card RemoveCardElement(BoardCard cardElement)
+        {
+            this.CardList.Children.Remove(cardElement);
+            OnCardsChange();
+            return cardElement.CardObject;
+        }
+
+        // Передвинуть карточку вверх
+        private bool MoveCardElementUp(BoardCard cardElement)
+        {
+            int previousPosition = CardList.Children.IndexOf(cardElement);
+            if (previousPosition == 0) return false;
+            CardList.Children.RemoveAt(previousPosition);
+            CardList.Children.Insert(previousPosition - 1, cardElement);
+            OnCardsChange();
+            return true;
+        }
+
+        // Передвинуть карточку вниз
+        private bool MoveCardElementDown(BoardCard cardElement)
+        {
+            int previousPosition = CardList.Children.IndexOf(cardElement);
+            if (previousPosition == CardList.Children.Count-1) return false;
+            CardList.Children.RemoveAt(previousPosition);
+            CardList.Children.Insert(previousPosition + 1, cardElement);
+            OnCardsChange();
+            return true;
+        }
+
+        // Обновить все карточки в базе данных
+        public void OnCardsChange()
+        {
+            foreach (BoardCard cardElement in CardList.Children)
+            {
+                cardElement.CardObject.Position = CardList.Children.IndexOf(cardElement);
+                DatabaseCommunicator.UPDATE_Card(Board, cardElement.CardObject); // SET
+            }
+        }
+
+        private void TextBox_ColumnTitle_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Не используем байндинг TwoWay, потому что это событие срабатывает до обновления свойства Title.
+            if (ColumnObject.Title != TextBox_ColumnTitle.Text)
+            {
+                ColumnObject.Title = TextBox_ColumnTitle.Text;
+                DatabaseCommunicator.UPDATE_Column(Board, ColumnObject);
+            }
         }
     }
 }

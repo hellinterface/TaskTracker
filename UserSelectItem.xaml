@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="TaskTracker.UserSelectItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TaskTracker"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="400">
+    <Border Background="White" BorderBrush="{StaticResource ButtonBackgroundColor_Normal}" BorderThickness="3" CornerRadius="3" Padding="8" Margin="0,0,0,6" Height="64">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="48"></ColumnDefinition>
+                <ColumnDefinition Width="48"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="CheckBox" Grid.Column="0" Background="White" BorderBrush="{StaticResource ButtonBackgroundColor_Normal}" BorderThickness="2" CornerRadius="3" Width="36" Height="36" MouseDown="CheckBox_MouseDown">
+                <TextBlock x:Name="CheckBoxIcon" FontFamily="Segoe Fluent Icons" Foreground="{StaticResource ColoredText}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
+            </Border>
+            <TextBlock Grid.Column="1" FontFamily="Segoe Fluent Icons" Foreground="{StaticResource ColoredText}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24"></TextBlock>
+            <TextBlock x:Name="TextBlock_Username" Grid.Column="2" FontFamily="Segoe UI" Foreground="{StaticResource ColoredText}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="24" FontWeight="SemiBold" Text="{Binding Username, Mode = OneWay}"></TextBlock>
+        </Grid>
+    </Border>
+</UserControl>

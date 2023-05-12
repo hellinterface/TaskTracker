@@ -8,8 +8,68 @@
         <SolidColorBrush x:Key="ButtonBackgroundColor_Normal" Color="#ff8888ee"></SolidColorBrush>
         <Color x:Key="ButtonBackgroundColor_Hover">#ffaaaaff</Color>
         <Color x:Key="ButtonBackgroundColor_Pressed">#ff6666cc</Color>
+        <Color x:Key="ButtonBackgroundColor_Disabled">#ff6666cc</Color>
         <SolidColorBrush x:Key="ColoredText" Color="#ff222266"></SolidColorBrush>
 
+        <Style x:Key="TextStyle_TextBoxLabel" TargetType="TextBlock">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="{DynamicResource ColoredText}"/>
+        </Style>
+
+        <Style x:Key="ButtonStyle_Inactive" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ButtonContainer" BorderThickness="2" Padding="8,0" Margin="0" CornerRadius="3" Background="White"  BorderBrush="{DynamicResource ButtonBackgroundColor_Normal}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.2" />
+                                        <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="ButtonContainer">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ButtonBackgroundColor_Hover}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="ButtonContainer">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ButtonBackgroundColor_Pressed}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                Storyboard.TargetName="ButtonContainer">
+                                                <EasingColorKeyFrame KeyTime="0" Value="{DynamicResource ButtonBackgroundColor_Disabled}" />
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <ContentPresenter HorizontalAlignment="Center"
+                           VerticalAlignment="Center" Name="content"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="{DynamicResource ColoredText}"/>
+        </Style>
+        
         <Style x:Key="ButtonStyle_Main" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
@@ -49,9 +109,13 @@
                 </Setter.Value>
             </Setter>
             <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="FontFamily" Value="Segoe Fluent Icons, Segoe UI Semibold"/>
+            <Setter Property="FontFamily" Value="Segoe UI Semibold"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Key="ButtonStyle_MainIcon" TargetType="Button" BasedOn="{StaticResource ButtonStyle_Main}">
+            <Setter Property="FontFamily" Value="Segoe Fluent Icons"/>
         </Style>
 
         <Style x:Key="TextBoxStyle_Main" TargetType="TextBox">
@@ -71,8 +135,23 @@
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="Foreground" Value="{DynamicResource TextInputColor}"/>
+        </Style>
+        <Style x:Key="TextBoxStyle_Incorrect" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle_Main}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderThickness="1" Padding="8,0" BorderBrush="#ff8888" CornerRadius="3" Background="White">
+                            <Grid>
+                                <ScrollViewer HorizontalAlignment="Stretch"
+                           VerticalAlignment="Center" Margin="0"
+                        x:Name="PART_ContentHost" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="TextBoxStyle_BoardTitle" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle_Main}">
@@ -94,6 +173,24 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="Foreground" Value="{DynamicResource ColoredText}"/>
+        </Style>
+
+        <Style x:Key="TextBoxStyle_MainMultiline" TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle_Main}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border BorderThickness="1" Padding="8,0" BorderBrush="#666666" CornerRadius="3" Background="White">
+                            <Grid>
+                                <ScrollViewer HorizontalAlignment="Stretch"
+                           VerticalAlignment="Stretch" Margin="0"
+                        x:Name="PART_ContentHost" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
         </Style>
 
         <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">

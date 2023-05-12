@@ -6,13 +6,12 @@
       xmlns:local="clr-namespace:TaskTracker"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="HomePage" Background="AliceBlue">
+      Title="HomePage" Background="#eeeeff">
     <Grid Margin="8,8,8,8">
         <Border Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6">
             <Grid>
-                <StackPanel x:Name="ToolBarStackPanel" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button x:Name="Button_AddBoard" Style="{StaticResource ButtonStyle_Main}" Content="&#xE109;" Click="Button_AddBoard_Click" IsEnabled="False"/>
-                </StackPanel>
+                <Button x:Name="Button_SignOut" Style="{StaticResource ButtonStyle_MainIcon}" Content="&#xE8F8;" HorizontalAlignment="Left" Click="Button_SignOut_Click"/>
+                <Button x:Name="Button_AddBoard" Style="{StaticResource ButtonStyle_MainIcon}" Content="&#xE109;" Click="Button_AddBoard_Click" HorizontalAlignment="Right"/>
             </Grid>
         </Border>
         <ScrollViewer Margin="0,41,0,0">

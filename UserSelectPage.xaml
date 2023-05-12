@@ -1,0 +1,26 @@
+﻿<Page x:Class="TaskTracker.UserSelectPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:TaskTracker"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UserSelectPage" Background="#eeeeff">
+    <Grid Margin="8,8,8,8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6" Margin="0,0,0,8">
+            <Grid>
+                <StackPanel x:Name="ToolBarStackPanel" Orientation="Horizontal">
+                    <Button x:Name="TopButton_GoBack" Style="{StaticResource ButtonStyle_MainIcon}" Margin="0,0,6,0" Click="TopButton_GoBack_Click"></Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel x:Name="MainStackPanel"></StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

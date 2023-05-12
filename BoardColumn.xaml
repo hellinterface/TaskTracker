@@ -13,18 +13,18 @@
                 <RowDefinition Height="44"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox Text="TextBox" Style="{StaticResource TextBoxStyle_Main}" Margin="4,4,4,0" VerticalAlignment="Top" Grid.Row="0"></TextBox>
-            <Grid Margin="4" Grid.Row="1">
+            <TextBox x:Name="TextBox_ColumnTitle" Text="{Binding Title, Mode = OneWay}" Style="{StaticResource TextBoxStyle_Main}" Margin="4,4,4,0" VerticalAlignment="Top" Grid.Row="0" LostFocus="TextBox_ColumnTitle_LostFocus"></TextBox>
+            <Grid x:Name="TopButtonContainer" Margin="4" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="TopButton_AddCard" Grid.Column="0" Style="{StaticResource ButtonStyle_Main}" Height="36" Width="42" Click="TopButton_AddCard_Click"></Button>
-                <Button x:Name="TopButton_Left" Grid.Column="1" Style="{StaticResource ButtonStyle_Main}" Height="36" Width="42"></Button>
-                <Button x:Name="TopButton_Right" Grid.Column="2" Style="{StaticResource ButtonStyle_Main}" Height="36" Width="42"></Button>
-                <Button x:Name="TopButton_RemoveColumn" Grid.Column="4" Style="{StaticResource ButtonStyle_Main}" Height="36" Width="42"></Button>
+                <Button x:Name="TopButton_AddCard" Grid.Column="0" Style="{StaticResource ButtonStyle_MainIcon}" Height="36" Width="42" Click="TopButton_AddCard_Click"></Button>
+                <Button x:Name="TopButton_Left" Grid.Column="1" Style="{StaticResource ButtonStyle_MainIcon}" Height="36" Width="42"></Button>
+                <Button x:Name="TopButton_Right" Grid.Column="2" Style="{StaticResource ButtonStyle_MainIcon}" Height="36" Width="42"></Button>
+                <Button x:Name="TopButton_DeleteColumn" Grid.Column="4" Style="{StaticResource ButtonStyle_MainIcon}" Height="36" Width="42"></Button>
             </Grid>
             <ScrollViewer Margin="0" Grid.Row="2">
                 <StackPanel Name="CardList"></StackPanel>

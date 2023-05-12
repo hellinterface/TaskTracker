@@ -20,10 +20,14 @@ namespace TaskTracker
     //
     public partial class BoardCard : UserControl
     {
-        public BoardCard(OBJ_Card bindedCardObject)
+        public OBJ_Card CardObject { get; }
+        public OBJ_Board Board { get; }
+        public BoardCard(OBJ_Board board, OBJ_Card bindedCardObject)
         {
             InitializeComponent();
             this.DataContext = bindedCardObject;
+            CardObject = bindedCardObject;
+            Board = board;
 
             Color tempColor;
             if (bindedCardObject.Color != null)
@@ -42,7 +46,12 @@ namespace TaskTracker
                 tempColor.G = 160;
                 tempColor.B = 160;
             }
-            // Красим элемент в соответствущий цвет, который указан в объекте карточки (OBJ_Card)
+            UpdateColor(tempColor);
+        }
+
+        // Красим элемент в соответствущий цвет
+        public void UpdateColor(Color tempColor)
+        {
             CardMainContainer.BorderBrush = new SolidColorBrush(tempColor);
         }
 
@@ -54,6 +63,16 @@ namespace TaskTracker
         private void CardMainContainer_MouseLeave(object sender, MouseEventArgs e)
         {
             VisualStateManager.GoToState(this, "Normal", true);
+        }
+
+        private void TextBox_Title_LostFocus(object sender, RoutedEventArgs e)
+        {
+            // Не используем байндинг TwoWay, потому что это событие срабатывает до обновления свойства Title.
+            if (CardObject.Title != TextBox_Title.Text)
+            {
+                CardObject.Title = TextBox_Title.Text;
+                DatabaseCommunicator.UPDATE_Card(Board, CardObject);
+            }
         }
     }
 }

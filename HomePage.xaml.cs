@@ -24,11 +24,21 @@ namespace TaskTracker
         {
             InitializeComponent();
 
+            OBJ_User currentUser = Application.Current.Properties["CurrentUser"] as OBJ_User;
+
             // Запрос
-            OBJ_Board[] allBoards = DatabaseCommunicator.GET_Boards("*");
+            List<OBJ_Board> boardList = DatabaseCommunicator.GET_Boards($"owner|=|{currentUser.Username}").ToList();
+            foreach (var board in DatabaseCommunicator.GET_Boards($"users_can_view|LISTCONTAINS|{currentUser.Username}"))
+            {
+                if (boardList.FindIndex(entry => entry.ID == board.ID) < 0) boardList.Add(board);
+            }
+            foreach (var board in DatabaseCommunicator.GET_Boards($"users_can_view|LISTCONTAINS|*"))
+            {
+                if (boardList.FindIndex(entry => entry.ID == board.ID) < 0) boardList.Add(board);
+            }
 
             // Создание элементов
-            foreach(OBJ_Board board in allBoards)
+            foreach (OBJ_Board board in boardList)
             {
                 AddBoardListItem(board);
             }
@@ -55,7 +65,17 @@ namespace TaskTracker
                 Owner = Application.Current.Properties["CurrentUser"] as OBJ_User
             };
             bool success = DatabaseCommunicator.ADD_Board(tempBoard);
-            if (success) { AddBoardListItem(tempBoard); }
+            if (success) {
+                //AddBoardListItem(tempBoard);
+                BoardPage tempDetailsPage = new BoardPage(tempBoard);
+                NavigationService.Navigate(tempDetailsPage);
+            }
+        }
+
+        private void Button_SignOut_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Properties["CurrentUser"] = null;
+            NavigationService.Navigate(new LoginPage());
         }
     }
 }

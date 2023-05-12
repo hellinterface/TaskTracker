@@ -5,22 +5,96 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TaskTracker"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="1000"
-      Title="CardDetailsPage" Background="AliceBlue">
+      d:DesignHeight="600" d:DesignWidth="1000"
+      Title="CardDetailsPage" Background="#eeeeff">
 
-    <Grid>
-        <Label Content="Подробности карточки" Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,41,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
-        <Label Content="{Binding Title, Mode = OneWay}" Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,101,0,0" VerticalAlignment="Top"/>
-        <Label Content="Выше - пример байндинга значений на примере поля Title." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,160,0,0" VerticalAlignment="Top"/>
-        <Label Content="Нужно удалить эти элементы Label." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,225,0,0" VerticalAlignment="Top"/>
-        <Label Content="Верхнюю панельку скопируйте с другой страницы и адаптируйте." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,293,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.556"/>
-        <Label Content="В контейнере справа должны создаваться задачи (TaskListItem)." Foreground="Black" FontSize="24" HorizontalAlignment="Left" Margin="45,353,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.501,0.556"/>
-        <Border Width="160" Height="400" HorizontalAlignment="Right" Margin="0,-1,30,0" CornerRadius="3" Background="DarkSlateBlue">
-            <ScrollViewer>
-                <StackPanel x:Name="TaskListContainer">
-                    
-                </StackPanel>
-            </ScrollViewer>
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" Background="#ffccccff" BorderThickness="0" CornerRadius="3" VerticalAlignment="Top" Height="36" Padding="6" Margin="0,0,0,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="48"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="TopButton_GoBack" Style="{StaticResource ButtonStyle_MainIcon}" Margin="0,0,6,0" Click="TopButton_GoBack_Click"></Button>
+                <TextBox Grid.Column="1" x:Name="TextBox_HeaderTitle" Text="{Binding Title, Mode = TwoWay}" Style="{StaticResource TextBoxStyle_BoardTitle}" Margin="0,0,6,0" Width="240" HorizontalAlignment="Left"></TextBox>
+                <Button Grid.Column="2" x:Name="TopButton_Remove" Style="{StaticResource ButtonStyle_MainIcon}" Margin="0,0,6,0" Click="TopButton_Remove_Click"></Button>
+            </Grid>
+        </Border>
+        <Border x:Name="MainContainer" Grid.Row="1" Background="White" BorderThickness="3" BorderBrush="Black" CornerRadius="3" Padding="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="48"></RowDefinition>
+                    <RowDefinition Height="48"></RowDefinition>
+                    <RowDefinition Height="36"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="48"></RowDefinition>
+                    <RowDefinition Height="48"></RowDefinition>
+                    <RowDefinition Height="48"></RowDefinition>
+                    <RowDefinition Height="48"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Название" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center" Margin="0,0,8,0"></TextBlock>
+                    <TextBox x:Name="TextBox_Title" Grid.Column="1" Text="{Binding Title, Mode = TwoWay}" Style="{StaticResource TextBoxStyle_Main}" Height="36"></TextBox>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Цвет" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center" Margin="0,0,8,0"></TextBlock>
+                    <TextBox x:Name="TextBox_Color" Grid.Column="1" Style="{StaticResource TextBoxStyle_Main}" Height="36" TextChanged="TextBox_Color_TextChanged"></TextBox>
+                </Grid>
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="Описание" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center" Margin="0,0,8,0"></TextBlock>
+                <TextBox x:Name="TextBox_Description" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" AcceptsReturn="True" Text="{Binding Description, Mode = TwoWay}" Style="{StaticResource TextBoxStyle_MainMultiline}" Margin="0,8"></TextBox>
+                <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Владелец" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center" Margin="0,0,8,0"></TextBlock>
+                    <TextBox x:Name="TextBox_Owner" Grid.Column="1"  Style="{StaticResource TextBoxStyle_Main}" Height="36" IsEnabled="False"></TextBox>
+                </Grid>
+                <Grid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Могут редактировать" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center" Margin="0,0,8,0"></TextBlock>
+                    <TextBox x:Name="TextBox_UsersCanEdit" Grid.Column="1"  Style="{StaticResource TextBoxStyle_Main}" Height="36" IsEnabled="False"></TextBox>
+                </Grid>
+                <Button x:Name="Button_GoToUserSelect" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource ButtonStyle_Main}" Height="36" Click="Button_GoToUserSelect_Click">Выбрать пользователей</Button>
+                <Border x:Name="Container_Tasks" Grid.Row="0" Grid.Column="2" Grid.RowSpan="7" CornerRadius="3" Background="#ffccccff" Margin="8,0,0,0">
+                    <ScrollViewer>
+                        <StackPanel x:Name="TaskListContainer">
+
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+                <Button x:Name="Button_AddTask" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="1" Style="{StaticResource ButtonStyle_MainIcon}" Height="36" Margin="8,0,0,0" Click="Button_AddTask_Click"></Button>
+                <Border Grid.Row="0" Grid.Column="3" Grid.RowSpan="7" CornerRadius="3" Background="#ffccccff" Margin="8,0,0,0">
+                    <ScrollViewer x:Name="Container_Images">
+                        <StackPanel x:Name="ImagesContainer" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        </StackPanel>
+                    </ScrollViewer>
+                </Border>
+                <Button x:Name="Button_AddImage" Grid.Row="7" Grid.Column="3" Grid.ColumnSpan="1" Style="{StaticResource ButtonStyle_MainIcon}" Height="36" Margin="8,0,0,0" Click="Button_AddImage_Click"></Button>
+            </Grid>
         </Border>
 
     </Grid>

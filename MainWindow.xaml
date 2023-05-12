@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskTracker"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" FontSize="16">
-    <Frame NavigationUIVisibility="Hidden" Panel.ZIndex="1" Source="HomePage.xaml" />
+        MinHeight="500" MinWidth="800"
+        Title="TaskTracker" Height="600" Width="1000" FontSize="16">
+    <Frame NavigationUIVisibility="Hidden" Panel.ZIndex="1" Source="LoginPage.xaml" />
     <TextOptions.TextFormattingMode>Display</TextOptions.TextFormattingMode>
 </Window>

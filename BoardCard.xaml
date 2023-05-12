@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TaskTracker"
              mc:Ignorable="d" 
-             d:DesignHeight="180" d:DesignWidth="250">
-    <Border x:Name="CardMainContainer" Height="140" Padding="8" BorderThickness="2" CornerRadius="3" Margin="4,4,4,4" Background="White" BorderBrush="#ff8877ff" MouseEnter="CardMainContainer_MouseEnter" MouseLeave="CardMainContainer_MouseLeave">
+             d:DesignHeight="120" d:DesignWidth="250">
+    <Border x:Name="CardMainContainer" Height="Auto" MaxHeight="300" Padding="8" BorderThickness="2" CornerRadius="3" Margin="4,4,4,4" Background="White" BorderBrush="#ff8877ff" MouseEnter="CardMainContainer_MouseEnter" MouseLeave="CardMainContainer_MouseLeave">
         <Border.Effect>
             <DropShadowEffect x:Name="MainContainerShadow" BlurRadius="8" Color="Black" Opacity="0.5" Direction="-90" ShadowDepth="0"/>
         </Border.Effect>
@@ -29,9 +29,20 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="24"></RowDefinition>
                 <RowDefinition></RowDefinition>
+                <RowDefinition Height="24"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" Style="{DynamicResource TextBoxStyle_Main}" Text="{Binding Title, Mode = OneWay}" FontSize="14" MaxLength="9"></TextBox>
-            <TextBlock Grid.Row="1" Margin="0, 6, 0, 0" Text="{Binding Description, Mode = OneWay}" FontSize="14" Foreground="#666666"></TextBlock>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="TextBox_Title" Grid.Row="0" Grid.ColumnSpan="4" Style="{DynamicResource TextBoxStyle_Main}" Text="{Binding Title, Mode = OneWay}" FontSize="14" MaxLength="9" LostFocus="TextBox_Title_LostFocus"></TextBox>
+            <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.ColumnSpan="4" Height="Auto" Margin="0, 6, 0, 6" Text="{Binding Description, Mode = OneWay}" FontSize="14" Foreground="#666666"></TextBlock>
+            <Button x:Name="Button_Left" Grid.Row="2" Grid.Column="0" Style="{DynamicResource ButtonStyle_MainIcon}" Margin="0,0,2,0"></Button>
+            <Button x:Name="Button_Right" Grid.Row="2" Grid.Column="1" Style="{DynamicResource ButtonStyle_MainIcon}" Margin="2,0,2,0"></Button>
+            <Button x:Name="Button_Up" Grid.Row="2" Grid.Column="2" Style="{DynamicResource ButtonStyle_MainIcon}" Margin="2,0,2,0"></Button>
+            <Button x:Name="Button_Down" Grid.Row="2" Grid.Column="3" Style="{DynamicResource ButtonStyle_MainIcon}" Margin="2,0,0,0"></Button>
         </Grid>
     </Border>
 </UserControl>
