@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 namespace TaskTracker
 {
+    //
     // Кастомный элемент: Колонка/столбец доски
     //
     public partial class BoardColumn : UserControl
