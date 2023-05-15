@@ -20,7 +20,7 @@ namespace TaskTracker
     /// </summary>
     public partial class UserSelectPage : Page
     {
-        private IPageWithUserSelect PreviousPage;
+        private IPageWithUserSelect PreviousPage; // Страница
 
         public UserSelectPage(IEnumerable<OBJ_User> users, IEnumerable<string> selectedUsernames, IPageWithUserSelect previousPage)
         {

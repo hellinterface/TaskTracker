@@ -26,11 +26,13 @@ namespace TaskTracker
             this.DataContext = bindedBoardObject;
         }
 
+        // Курсор над карточкой
         private void CardMainContainer_MouseEnter(object sender, MouseEventArgs e)
         {
             VisualStateManager.GoToState(this, "MouseOver", true);
         }
 
+        // Курсор не над карточкой
         private void CardMainContainer_MouseLeave(object sender, MouseEventArgs e)
         {
             VisualStateManager.GoToState(this, "Normal", true);

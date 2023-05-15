@@ -760,7 +760,6 @@ namespace TaskTracker
             {
                 foreach (var card in column.Cards)
                 {
-                    column.Cards.Remove(card);
                     DEL_Card(board, column, card);
                 }
                 return true;
@@ -776,12 +775,10 @@ namespace TaskTracker
                 recieved = SocketClient.Send(MakeQuery(new string[] { "DB", $"{board.ID}_cards", "DEL", card.ID }));
                 foreach (var task in card.Tasks)
                 {
-                    card.Tasks.Remove(task);
                     DEL_Task(board, card, task);
                 }
                 foreach (var image in card.Images)
                 {
-                    card.Images.Remove(image);
                     DEL_Image(board, card, image);
                 }
                 return true;

@@ -41,20 +41,24 @@ namespace TaskTracker
             Card = bindedCardObject;
             Column = column;
             Board = previousPage.Board;
+            // Заполнение полей ввода
             UserListTextBox = TextBox_UsersCanEdit;
             TextBox_Owner.Text = Card.Owner.Username;
             TextBox_UsersCanEdit.Text = stringifyUserList(Card.UsersCanEdit);
 
             OBJ_User currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as OBJ_User;
-
+            
+            // Если открыл владелец, то оставим ему всё как есть
             if (Card.Owner.Username == currentUser.Username)
             {
             }
+            // Если открыл не владелец, но редактировать можно, то отключим удаление и выбор прав пользователям
             else if (Card.UsersCanEdit.FindIndex(entry => (entry.Username == currentUser.Username) || (entry.Username == "*")) >= 0)
             {
                 TopButton_Remove.IsEnabled = false;
                 Button_GoToUserSelect.IsEnabled = false;
             }
+            // Если открыл человек без прав на редактирование, то нужно отключить всё
             else
             {
                 TextBox_HeaderTitle.IsEnabled = false;
@@ -91,6 +95,7 @@ namespace TaskTracker
             }
         }
 
+        // Удалить изображение
         private bool RemoveImage(System.Windows.Controls.Image imageElement)
         {
             int foundIndex = Card.Images.FindIndex(entry => entry.BitmapImage == imageElement.Source);
@@ -106,6 +111,7 @@ namespace TaskTracker
             return false;
         }
 
+        // Получить список объектов пользователей из списка юзернеймов
         private List<OBJ_User> getUsersFromString(string str)
         {
             List<OBJ_User> result = new List<OBJ_User>();
@@ -221,25 +227,29 @@ namespace TaskTracker
         // Кнопка добавления изображения
         private void Button_AddImage_Click(object sender, RoutedEventArgs e)
         {
+            // Открыть окно выбора файла
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image files (*.png;*.jpg;*.jpeg;*.gif;*.bmp)|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
             if (openFileDialog.ShowDialog() == true)
             {
+                // Перевод в Base64
                 string base64string = Convert.ToBase64String(File.ReadAllBytes(openFileDialog.FileName));
                 OBJ_Image img = new OBJ_Image() {
                     Base64 = base64string
                 };
-                Card.Images.Add(img);
+                Card.Images.Add(img); // Добавление в объект карточки
 
-                bool success = DatabaseCommunicator.ADD_Image(Board, Card, img);
+                bool success = DatabaseCommunicator.ADD_Image(Board, Card, img); // Запрос в БД
                 if (success == true)
                 {
+                    // Создать новый элемент на экране
                     System.Windows.Controls.Image newImageElement = new System.Windows.Controls.Image();
                     newImageElement.Source = img.BitmapImage;
                     ImagesContainer.Children.Add(newImageElement);
                 }
                 else
                 {
+                    // Неудачный запрос, возвращаем всё как было
                     Card.Images.Remove(img);
                 }
             }
