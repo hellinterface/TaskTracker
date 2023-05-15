@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace TaskTracker
 
 
 
-            if (currentUser.Username == Board.Owner.Username)
+            if (currentUser.Username == Board.Owner.Username) // владелец илии нет
             {
                 IsViewingUser_Owner = true;
                 IsViewingUser_CanEdit = true;
@@ -165,14 +165,14 @@ namespace TaskTracker
             OnColumnsChange();
             return newBoardColumnElement;
         }
-
+// перейти на стр. Настроек
         private void TopButton_AccessSettings_Click(object sender, RoutedEventArgs e)
         {
             BoardAccessSettingsPage tempSettingsPage = new BoardAccessSettingsPage(Board);
             NavigationService.Navigate(tempSettingsPage);
         }
 
-        private void TextBox_BoardTitle_LostFocus(object sender, RoutedEventArgs e)
+        private void TextBox_BoardTitle_LostFocus(object sender, RoutedEventArgs e)// при потере фокуса обновляются данные о доске
         {
             // Не используем байндинг TwoWay, потому что это событие срабатывает до обновления свойства Title.
             if (Board.Title != TextBox_BoardTitle.Text)

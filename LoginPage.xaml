@@ -32,8 +32,8 @@
                 <TextBlock Grid.Row="0" Text="Имя пользователя" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center"></TextBlock>
                 <TextBox x:Name="TextBox_Username" Grid.Row="1" Style="{StaticResource TextBoxStyle_Main}" Height="36"></TextBox>
                 <TextBlock Grid.Row="2" Text="Пароль" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center"></TextBlock>
-                <TextBox x:Name="TextBox_Password" Grid.Row="3" Style="{StaticResource TextBoxStyle_Main}" Height="36"></TextBox>
-                <Button x:Name="Button_OK" Grid.Row="4" Style="{StaticResource ButtonStyle_Main}" Height="36" Content="Войти" Click="Button_OK_Click"></Button>
+                <TextBox x:Name="TextBox_Password" Grid.Row="3" Style="{StaticResource TextBoxStyle_Main}" Height="36"></TextBox> 
+                <Button x:Name="Button_OK" Grid.Row="4" Style="{StaticResource ButtonStyle_Main}" Height="36" Content="Войти" Click="Button_OK_Click"></Button> <!--кнопка отправляет запрос в бд, если что-то найдено, то переходит на главную страницу-->
                 <Button x:Name="Button_ToRegister" Grid.Row="5" Style="{StaticResource ButtonStyle_Main}" Height="36" Content="Создать аккаунт" Click="Button_ToRegister_Click"/>
             </Grid>
         </Border>

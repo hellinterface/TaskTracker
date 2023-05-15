@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace TaskTracker
         public LoginPage()
         {
             InitializeComponent();
-            foreach (var username in DatabaseCommunicator.KEYS_Users())
+            foreach (var username in DatabaseCommunicator.KEYS_Users()) // получает список пользователей и делает каждому кнопку
             {
                 var newButton = new Button();
                 newButton.Style = (Style)FindResource("ButtonStyle_Main");
