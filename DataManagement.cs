@@ -556,7 +556,7 @@ namespace TaskTracker
             List<string> usersCanEditUsernames = new List<string>();
             foreach (var user in card.UsersCanEdit) { usersCanEditUsernames.Add(user.Username); }
             // Делаем массив с компонентами запроса в БД
-            List<string> tempStringComponents = new List<string>
+            List<string> tempStringComponents = new List<string>()
             {
                 card.ID,
                 card.Position.ToString(),
@@ -564,8 +564,8 @@ namespace TaskTracker
                 String.Join(',', usersCanEditUsernames),
                 card.Title,
                 card.Description,
-                new System.Windows.Media.ColorConverter().ConvertToString(card.Color),
-                String.Join(',', card.Images),
+                (new System.Windows.Media.ColorConverter()).ConvertToString(card.Color),
+                String.Join(',', card.ImageIDs),
                 String.Join(',', card.TaskIDs)
             };
             // Соединяем всё воедино
