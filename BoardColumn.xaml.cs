@@ -23,8 +23,8 @@ namespace TaskTracker
         private OBJ_Board Board;
         public OBJ_Column ColumnObject { get; }
         private BoardPage ParentPage;
-        private Action<BoardCard, MouseButtonEventArgs> CardClickFunction;
-        private bool IsViewingUser_CanEdit;
+        private Action<BoardCard, MouseButtonEventArgs> CardClickFunction; // функция, которая должна происходить при нажатии на карточку
+        private bool IsViewingUser_CanEdit; // может ли текущий пользователь редактировать доску
 
         public BoardColumn(BoardPage parentPage, OBJ_Board board, OBJ_Column column, Action<BoardCard, MouseButtonEventArgs> cardClickFunction, bool IsViewingUser_CanEdit)
         {
@@ -37,13 +37,13 @@ namespace TaskTracker
             this.IsViewingUser_CanEdit = IsViewingUser_CanEdit;
 // если пользователь может вносить изменения, то кнопки существуют, иначе кнопки не работают/исчезают
             if (IsViewingUser_CanEdit == true)
-            {
+            { // назначение кнопкам функций (при нажатии на кнопку что-то происходит)
                 this.TopButton_Left.Click += (sender, e) => ParentPage.MoveColumnElementLeft(this);
                 this.TopButton_Right.Click += (sender, e) => ParentPage.MoveColumnElementRight(this);
                 this.TopButton_DeleteColumn.Click += (sender, e) => ParentPage.DeleteColumn(this);
             }
             else
-            {
+            { // скрыть и заблокировать элементы
                 this.TopButtonContainer.Visibility = Visibility.Collapsed;
                 this.TopButton_AddCard.IsEnabled = false;
                 this.TopButton_Left.IsEnabled = false;
@@ -57,7 +57,7 @@ namespace TaskTracker
             allCards = allCards.OrderBy(entry => entry.Position).ToList();
             foreach (var card in allCards)
             {
-                var cardElement = AddCardElement(card);
+                var cardElement = AddCardElement(card); // создать элемент
             }
         }
 
@@ -90,14 +90,14 @@ namespace TaskTracker
             var newCardElement = new BoardCard(Board, cardObject);
             newCardElement.MouseDown += (sender, e) => this.CardClickFunction(newCardElement, e);
             if (IsViewingUser_CanEdit == true)
-            {
+            { // назначение кнопкам функций 
                 newCardElement.Button_Left.Click += (sender, e) => ParentPage.MoveCardLeft(this, newCardElement);
                 newCardElement.Button_Right.Click += (sender, e) => ParentPage.MoveCardRight(this, newCardElement);
                 newCardElement.Button_Up.Click += (sender, e) => this.MoveCardElementUp(newCardElement);
                 newCardElement.Button_Down.Click += (sender, e) => this.MoveCardElementDown(newCardElement);
             }
             else
-            {
+            {   // скрыть и заблокировать элементы
                 newCardElement.Button_Left.Visibility = Visibility.Collapsed;
                 newCardElement.Button_Right.Visibility = Visibility.Collapsed;
                 newCardElement.Button_Up.Visibility = Visibility.Collapsed;
@@ -118,11 +118,11 @@ namespace TaskTracker
         // Передвинуть карточку вверх
         private bool MoveCardElementUp(BoardCard cardElement)
         {
-            int previousPosition = CardList.Children.IndexOf(cardElement);
-            if (previousPosition == 0) return false;
-            CardList.Children.RemoveAt(previousPosition);
-            CardList.Children.Insert(previousPosition - 1, cardElement);
-            OnCardsChange();
+            int previousPosition = CardList.Children.IndexOf(cardElement); // получение индекса элемента до перемещения
+            if (previousPosition == 0) return false; // передвигать некуда
+            CardList.Children.RemoveAt(previousPosition); // удаление элемента
+            CardList.Children.Insert(previousPosition - 1, cardElement); // вставка элемента на новую позицию
+            OnCardsChange(); // обновление карточек
             return true;
         }
 
