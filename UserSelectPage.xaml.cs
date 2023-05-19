@@ -15,23 +15,25 @@ using System.Windows.Shapes;
 
 namespace TaskTracker
 {
-    /// <summary>
-    /// Interaction logic for UserSelectPage.xaml
-    /// </summary>
+    //
+    // Страница выбора пользователей
+    //
     public partial class UserSelectPage : Page
     {
-        private IPageWithUserSelect PreviousPage; // Страница
+        private IPageWithUserSelect PreviousPage; // Предыдущая страница
 
         public UserSelectPage(IEnumerable<OBJ_User> users, IEnumerable<string> selectedUsernames, IPageWithUserSelect previousPage)
         {
             InitializeComponent();
             PreviousPage = previousPage;
-
+            
+            // Создание элемента "Все пользователи"
             UserSelectItem allUsersItem = new UserSelectItem(Application.Current.Properties["AllUsers"] as OBJ_User);
             allUsersItem.TextBlock_Username.Text = "Все пользователи";
             if (selectedUsernames.Contains("*")) { allUsersItem.IsChecked = true; } else { allUsersItem.IsChecked = false; }
             MainStackPanel.Children.Add(allUsersItem);
 
+            // Добавление элемента каждого пользователя в список элементов
             foreach (var user in users)
             {
                 UserSelectItem newListItem = new UserSelectItem(user);
@@ -40,6 +42,7 @@ namespace TaskTracker
             }
         }
 
+        // Получить список выбранных пользователей строкой через запятую
         public string[] GetSelectedUsernames()
         {
             List<string> result = new List<string>();
@@ -50,11 +53,12 @@ namespace TaskTracker
             return result.ToArray();
         }
 
+        // Нажатие на кнопку назад
         private void TopButton_GoBack_Click(object sender, RoutedEventArgs e)
         {
             //PreviousPage.UserListTextBox.Text = String.Join(",", GetSelectedUsernames());
-            PreviousPage.SetUsersFromUserSelectPage(this);
-            NavigationService.Navigate(PreviousPage);
+            PreviousPage.SetUsersFromUserSelectPage(this); // Поставить пользователей с этой страницы на страницу, которой это потребовалось.
+            NavigationService.Navigate(PreviousPage); // Перейти на предыдущую страницу
         }
     }
 }
