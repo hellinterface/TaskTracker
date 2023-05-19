@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 
 namespace TaskTracker
 {
-    /// <summary>
-    /// Interaction logic for LoginPage.xaml
-    /// </summary>
+    //
+    // Страница входа в аккаунт
+    //
     public partial class LoginPage : Page
     {
         public LoginPage()
@@ -38,21 +38,24 @@ namespace TaskTracker
             }
         }
 
+        // Нажатие на кнопку ОК
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
+            // Запрос в БД
             OBJ_User[] recievedUsers = DatabaseCommunicator.GET_Users(new string[] { $"username|=|{TextBox_Username.Text}", $"password|=|{TextBox_Password.Text}"});
-            if (recievedUsers.Length == 1)
+            if (recievedUsers.Length == 1) // Пользователь нашёлся
             {
                 Application.Current.Properties["CurrentUser"] = recievedUsers[0];
-                NavigationService.Navigate(new HomePage());
+                NavigationService.Navigate(new HomePage()); // Перейти на домашнюю страницу
             }
-            else
+            else // Пользователь не найден
             {
                 TextBox_Username.Style = (Style)FindResource("TextBoxStyle_Incorrect");
                 TextBox_Password.Style = (Style)FindResource("TextBoxStyle_Incorrect");
             }
         }
-
+        
+        // Перейти на страницу регистрации
         private void Button_ToRegister_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new RegisterPage());
