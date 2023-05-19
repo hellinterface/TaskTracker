@@ -15,13 +15,13 @@ using System.Windows.Shapes;
 
 namespace TaskTracker
 {
-    /// <summary>
-    /// Interaction logic for UserSelectItem.xaml
-    /// </summary>
+    //
+    // Кастомный элемент пользователя (на странице выбора пользователей)
+    //
     public partial class UserSelectItem : UserControl
     {
-        public OBJ_User User { get; }
-        private bool isChecked = false;
+        public OBJ_User User { get; } // Объект пользователя
+        private bool isChecked = false; // Отмечено?
         public bool IsChecked
         {
             get
@@ -31,33 +31,35 @@ namespace TaskTracker
             set
             {
                 isChecked = value;
-                UpdateAppearance();
+                UpdateAppearance(); // Обновить внешний вид
             }
         }
-
+        
         public UserSelectItem(OBJ_User user, bool isChecked = false)
         {
             InitializeComponent();
             this.DataContext = user;
             User = user;
             IsChecked = isChecked;
-            UpdateAppearance();
+            UpdateAppearance(); // Обновить внешний вид
         }
 
+        // Функция обновления внешнего вида элемента
         private void UpdateAppearance()
         {
-            if (IsChecked == true)
+            if (IsChecked == true) // Отмечено выбранным
             {
                 CheckBox.Background = (SolidColorBrush)FindResource("ButtonBackgroundColor_Normal");
                 CheckBoxIcon.Foreground = new SolidColorBrush(Colors.White);
             }
-            else
+            else // Не отмечено
             {
                 CheckBox.Background = new SolidColorBrush(Colors.White);
                 CheckBoxIcon.Foreground = (SolidColorBrush)FindResource("ColoredText");
             }
         }
 
+        // Нажатие на чекбокс (кнопка выбрано/не выбрано)
         private void CheckBox_MouseDown(object sender, MouseButtonEventArgs e)
         {
             IsChecked = !IsChecked;
