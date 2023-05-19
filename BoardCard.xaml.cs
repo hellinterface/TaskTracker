@@ -55,23 +55,23 @@ namespace TaskTracker
             CardMainContainer.BorderBrush = new SolidColorBrush(tempColor);
         }
 
-        private void CardMainContainer_MouseEnter(object sender, MouseEventArgs e)
+        private void CardMainContainer_MouseEnter(object sender, MouseEventArgs e) // событие курсор над элементом (наведение)
         {
             VisualStateManager.GoToState(this, "MouseOver", true);
         }
 
-        private void CardMainContainer_MouseLeave(object sender, MouseEventArgs e)
+        private void CardMainContainer_MouseLeave(object sender, MouseEventArgs e) // событие курсор покинул элемент
         {
             VisualStateManager.GoToState(this, "Normal", true);
         }
-
+        // событие потери фокуса у поля ввода названия
         private void TextBox_Title_LostFocus(object sender, RoutedEventArgs e)
         {
             // Не используем байндинг TwoWay, потому что это событие срабатывает до обновления свойства Title.
             if (CardObject.Title != TextBox_Title.Text)
             {
-                CardObject.Title = TextBox_Title.Text;
-                DatabaseCommunicator.UPDATE_Card(Board, CardObject);
+                CardObject.Title = TextBox_Title.Text; // обновление объекта карточки
+                DatabaseCommunicator.UPDATE_Card(Board, CardObject); // обновление в бд
             }
         }
     }
