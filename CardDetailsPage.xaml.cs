@@ -27,8 +27,8 @@ namespace TaskTracker
     {
         public TextBox UserListTextBox { get; set; }
 
-        private BoardPage SenderPage;
-        private BoardCard SenderElement;
+        private BoardPage SenderPage; // предыдущая страница
+        private BoardCard SenderElement; // элемент карточки, которую смотрим
         private OBJ_Card Card;
         private OBJ_Column Column;
         private OBJ_Board Board;
@@ -46,7 +46,7 @@ namespace TaskTracker
             TextBox_Owner.Text = Card.Owner.Username;
             TextBox_UsersCanEdit.Text = stringifyUserList(Card.UsersCanEdit);
 
-            OBJ_User currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as OBJ_User;
+            OBJ_User currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as OBJ_User; // текущий пользователь
             
             // Если открыл владелец, то оставим ему всё как есть
             if (Card.Owner.Username == currentUser.Username)
@@ -98,10 +98,10 @@ namespace TaskTracker
         // Удалить изображение
         private bool RemoveImage(System.Windows.Controls.Image imageElement)
         {
-            int foundIndex = Card.Images.FindIndex(entry => entry.BitmapImage == imageElement.Source);
+            int foundIndex = Card.Images.FindIndex(entry => entry.BitmapImage == imageElement.Source); // поиск картинки с идентичным содержанием как у той что на экране
             if (foundIndex >= 0)
             {
-                bool success = DatabaseCommunicator.DEL_Image(Board, Card, Card.Images[foundIndex]);
+                bool success = DatabaseCommunicator.DEL_Image(Board, Card, Card.Images[foundIndex]); // запрос в бд
                 if (success)
                 {
                     ImagesContainer.Children.Remove(imageElement);
@@ -209,13 +209,13 @@ namespace TaskTracker
 
         // Кнопка добавления задачи
         private void Button_AddTask_Click(object sender, RoutedEventArgs e)
-        {
+        { // создание объекта задачи
             OBJ_Task task = new OBJ_Task() { };
-            Card.Tasks.Add(task);
-            bool success = DatabaseCommunicator.ADD_Task(Board, Card, task);
+            Card.Tasks.Add(task); // добавление объекта в список задач карточки
+            bool success = DatabaseCommunicator.ADD_Task(Board, Card, task); // запрос в бд
             if (success == true)
             {
-                TaskListItem newTaskElement = new TaskListItem(Board, Card, task, this);
+                TaskListItem newTaskElement = new TaskListItem(Board, Card, task, this); // создание и добавление элемента
                 TaskListContainer.Children.Add(newTaskElement);
             }
             else
