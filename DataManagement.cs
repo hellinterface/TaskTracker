@@ -18,6 +18,8 @@ using System.IO;
 namespace TaskTracker
 {
 
+    // Интерфейс страницы, на которой есть функция выбора пользователей
+    // (может переходить на страницу выбора пользователей UserSelectPage)
     public interface IPageWithUserSelect
     {
         void SetUsersFromUserSelectPage(UserSelectPage page);
@@ -27,8 +29,8 @@ namespace TaskTracker
     // Класс "Пользователь"
     public class OBJ_User
     {
-        public string Username { get; init; }
-        public string Password { get; set; }
+        public string Username { get; init; } // Имя
+        public string Password { get; set; } // Пароль
 
         public OBJ_User()
         {
@@ -42,11 +44,11 @@ namespace TaskTracker
     // Класс "Доска"
     public class OBJ_Board
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6);
-        public string Title { get; set; } = "Новая доска";
-        public OBJ_User Owner { get; init; }
-        public List<OBJ_User> UsersCanView { get; set; } = new List<OBJ_User>();
-        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>();
+        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
+        public string Title { get; set; } = "Новая доска"; // Название
+        public OBJ_User Owner { get; init; } // Пользователь-владелец
+        public List<OBJ_User> UsersCanView { get; set; } = new List<OBJ_User>(); // Пользователи с правами на просмотр
+        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>(); // Пользователи с правами на редактирование
 
         public OBJ_Board()
         {
@@ -55,10 +57,10 @@ namespace TaskTracker
     // Класс "Столбец"/"Колонка"
     public class OBJ_Column
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6);
-        public int Position { get; set; }
-        public string Title { get; set; } = "Новый столбец";
-        public List<OBJ_Card> Cards { get; set; } = new List<OBJ_Card>();
+        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
+        public int Position { get; set; } // Номер позиции
+        public string Title { get; set; } = "Новый столбец"; // Название
+        public List<OBJ_Card> Cards { get; set; } = new List<OBJ_Card>(); // Карточки внутри столбца
         public List<string> CardIDs
         {
             get // выдает id карточек, которые есть в столбце
@@ -76,15 +78,15 @@ namespace TaskTracker
     // Класс "Карточка"
     public class OBJ_Card
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6);
-        public int Position { get; set; }
-        public OBJ_User Owner { get; init; }
-        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>();
-        public string Title { get; set; } = "Новая карточка";
-        public string Description { get; set; } = "";
-        public System.Windows.Media.Color Color { get; set; } = System.Windows.Media.Color.FromArgb(255, 160, 160, 160);
-        public List<OBJ_Image> Images { get; set; } = null;
-        public List<string> ImageIDs
+        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
+        public int Position { get; set; } // Номер позиции
+        public OBJ_User Owner { get; init; } // Пользователь-владелец
+        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>(); // Пользователи с правами на редактирование
+        public string Title { get; set; } = "Новая карточка"; // Название
+        public string Description { get; set; } = ""; // Описание
+        public System.Windows.Media.Color Color { get; set; } = System.Windows.Media.Color.FromArgb(255, 160, 160, 160); // Цвет
+        public List<OBJ_Image> Images { get; set; } = null; // Список изображений
+        public List<string> ImageIDs // Идентификаторы изображений в списке
         {
             get
             {
@@ -93,8 +95,8 @@ namespace TaskTracker
                 return result;
             }
         }
-        public List<OBJ_Task> Tasks { get; set; } = null;
-        public List<string> TaskIDs { 
+        public List<OBJ_Task> Tasks { get; set; } = null; // Список задач
+        public List<string> TaskIDs { // Идентификаторы задач в списке
             get
             {
                 List<string> result = new List<string>();
@@ -110,9 +112,9 @@ namespace TaskTracker
     // Класс "Задача" (в списке задач)
     public class OBJ_Task
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6);
-        public string Text { get; set; } = "Новая задача";
-        public bool Done { get; set; } = false;
+        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
+        public string Text { get; set; } = "Новая задача"; // Текст задачи
+        public bool Done { get; set; } = false; // Сделано или нет
 
         public OBJ_Task()
         {
@@ -121,10 +123,10 @@ namespace TaskTracker
     // Класс "Изображение"
     public class OBJ_Image
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6);
-        public BitmapImage BitmapImage { get; protected set; }// само изображение
-        private string base64;
-        public string Base64 { // закодированное изображение
+        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
+        public BitmapImage BitmapImage { get; protected set; } // само изображение
+        private string base64; // Изображение в кодировке Base64
+        public string Base64 { // То же самое, только при set меняет и BitmapImage
             get
             {
                 return base64;
@@ -160,6 +162,7 @@ namespace TaskTracker
             }
             return new String(stringChars);
         }
+        // Содержит ли строка запрещённые символы?
         public static bool ContainsBannedCharacters(string text)
         {
             if (text.Contains("|") ||
@@ -176,6 +179,7 @@ namespace TaskTracker
         }
     }
 
+    // Работа с сокетами
     static class SocketClient
     {
         static Socket sender;
@@ -245,6 +249,7 @@ namespace TaskTracker
             {
                 throw new Exception();
             }
+            // Заполнение заголовка и содержания
             Header = rows[0].Split('|').ToList();
             for (int i = 1; i < rows.Length; i++)
             {
@@ -261,7 +266,7 @@ namespace TaskTracker
     // Связь с базой данных/сервером
     static class DatabaseCommunicator
     {
-
+        // Склеить всё символами
         private static string MakeQuery(IEnumerable<string> components)
         {
             return String.Join('¶', components);
