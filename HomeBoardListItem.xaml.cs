@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 
 namespace TaskTracker
 {
-    /// <summary>
-    /// Interaction logic for HomeBoardListItem.xaml
-    /// </summary>
+    //
+    // Кастомный элемент доски на домашней странице
+    //
     public partial class HomeBoardListItem : UserControl
     {
         public HomeBoardListItem(OBJ_Board bindedBoardObject)
