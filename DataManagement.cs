@@ -29,26 +29,73 @@ namespace TaskTracker
     // Класс "Пользователь"
     public class OBJ_User
     {
-        public string Username { get; init; } // Имя
-        public string Password { get; set; } // Пароль
+        private string username;
+        public string Username 
+        {
+            get { return username; }
+            init { username = value; }
+        } // Имя
 
         public OBJ_User()
         {
         }
-        public OBJ_User(string username, string password)
+        public OBJ_User(string username)
         {
             Username = username;
+        }
+    }
+    // Класс "Пользователь+пароль"
+    public class OBJ_UserWithPassword : OBJ_User
+    {
+        private string password;
+        public string Password 
+        {
+            get { return password; }
+            init { password = value; }
+        } // Пароль
+
+        public OBJ_UserWithPassword() : base()
+        {
+        }
+        public OBJ_UserWithPassword(string username, string password) : base(username)
+        {
             Password = password;
         }
     }
     // Класс "Доска"
     public class OBJ_Board
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
-        public string Title { get; set; } = "Новая доска"; // Название
-        public OBJ_User Owner { get; init; } // Пользователь-владелец
-        public List<OBJ_User> UsersCanView { get; set; } = new List<OBJ_User>(); // Пользователи с правами на просмотр
-        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>(); // Пользователи с правами на редактирование
+        private string id = Utilities.GetRandomString(6); // Идентификатор
+        private string title = "Новая доска"; // Название
+        private OBJ_User owner; // Пользователь-владелец
+        private List<OBJ_User> usersCanEdit = new List<OBJ_User>(); // Пользователи с правами на редактирование
+        private List<OBJ_User> usersCanView = new List<OBJ_User>(); // Пользователи с правами на просмотр
+
+        public string ID
+        {
+            get { return id; }
+            init { id = value; }
+        }
+        public string Title
+        {
+            get { return title; }
+            set { title = value; }
+        }
+        public OBJ_User Owner
+        {
+            get { return owner; }
+            init { owner = value; }
+        }
+        public List<OBJ_User> UsersCanView
+        {
+            get { return usersCanView; }
+            set { usersCanView = value; }
+        }
+        public List<OBJ_User> UsersCanEdit
+        {
+            get { return usersCanEdit; }
+            set { usersCanEdit = value; }
+        }
 
         public OBJ_Board()
         {
@@ -57,16 +104,44 @@ namespace TaskTracker
     // Класс "Столбец"/"Колонка"
     public class OBJ_Column
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
-        public int Position { get; set; } // Номер позиции
-        public string Title { get; set; } = "Новый столбец"; // Название
-        public List<OBJ_Card> Cards { get; set; } = new List<OBJ_Card>(); // Карточки внутри столбца
+        private string id = Utilities.GetRandomString(6); // Идентификатор
+        private int position; // Номер позиции
+        private string title = "Новая доска"; // Название
+        private OBJ_User owner; // Пользователь-владелец
+        private List<OBJ_Card> cards = new List<OBJ_Card>(); // Карточки внутри столбца
+        private List<OBJ_User> usersCanView = new List<OBJ_User>(); // Пользователи с правами на просмотр
+
+        public string ID
+        {
+            get { return id; }
+            init { id = value; }
+        }
+        public int Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+        public string Title
+        {
+            get { return title; }
+            set { title = value; }
+        }
+        public OBJ_User Owner
+        {
+            get { return owner; }
+            init { owner = value; }
+        }
+        public List<OBJ_Card> Cards
+        {
+            get { return cards; }
+            set { cards = value; }
+        }
         public List<string> CardIDs
         {
             get // выдает id карточек, которые есть в столбце
             {
                 List<string> result = new List<string>();
-                foreach (var card in Cards) result.Add(card.ID);
+                foreach (var card in cards) result.Add(card.ID);
                 return result;
             }
         }
@@ -78,29 +153,75 @@ namespace TaskTracker
     // Класс "Карточка"
     public class OBJ_Card
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
-        public int Position { get; set; } // Номер позиции
-        public OBJ_User Owner { get; init; } // Пользователь-владелец
-        public List<OBJ_User> UsersCanEdit { get; set; } = new List<OBJ_User>(); // Пользователи с правами на редактирование
-        public string Title { get; set; } = "Новая карточка"; // Название
-        public string Description { get; set; } = ""; // Описание
-        public System.Windows.Media.Color Color { get; set; } = System.Windows.Media.Color.FromArgb(255, 160, 160, 160); // Цвет
-        public List<OBJ_Image> Images { get; set; } = null; // Список изображений
+        private string id = Utilities.GetRandomString(6); // Идентификатор
+        private int position; // Номер позиции
+        private string title = "Новая доска"; // Название
+        private string description = "Новая доска"; // Название
+        private System.Windows.Media.Color color = System.Windows.Media.Color.FromArgb(255, 160, 160, 160); // Цвет
+        private OBJ_User owner; // Пользователь-владелец
+        private List<OBJ_User> usersCanEdit = new List<OBJ_User>(); // Пользователи с правами на редактирование
+        private List<OBJ_Image> images = new List<OBJ_Image>(); // Изображения
+        private List<OBJ_Task> tasks = new List<OBJ_Task>(); // Задачи
+
+        public string ID
+        {
+            get { return id; }
+            init { id = value; }
+        }
+        public int Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+        public string Title
+        {
+            get { return title; }
+            set { title = value; }
+        }
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
+        }
+        public OBJ_User Owner
+        {
+            get { return owner; }
+            init { owner = value; }
+        }
+        public List<OBJ_User> UsersCanEdit
+        {
+            get { return usersCanEdit; }
+            set { usersCanEdit = value; }
+        }
+        public System.Windows.Media.Color Color
+        {
+            get { return color; }
+            set { color = value; }
+        }
+        public List<OBJ_Image> Images
+        {
+            get { return images; }
+            set { images = value; }
+        }
+        public List<OBJ_Task> Tasks
+        {
+            get { return tasks; }
+            set { tasks = value; }
+        }
         public List<string> ImageIDs // Идентификаторы изображений в списке
         {
             get
             {
                 List<string> result = new List<string>();
-                if (Images != null) foreach (OBJ_Image image in Images) result.Add(image.ID);
+                if (images != null) foreach (OBJ_Image image in images) result.Add(image.ID);
                 return result;
             }
         }
-        public List<OBJ_Task> Tasks { get; set; } = null; // Список задач
         public List<string> TaskIDs { // Идентификаторы задач в списке
             get
             {
                 List<string> result = new List<string>();
-                if (Tasks != null) foreach (OBJ_Task task in Tasks) result.Add(task.ID);
+                if (tasks != null) foreach (OBJ_Task task in tasks) result.Add(task.ID);
                 return result;
             }
         }
@@ -112,9 +233,25 @@ namespace TaskTracker
     // Класс "Задача" (в списке задач)
     public class OBJ_Task
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
-        public string Text { get; set; } = "Новая задача"; // Текст задачи
-        public bool Done { get; set; } = false; // Сделано или нет
+        private string id = Utilities.GetRandomString(6); // Идентификатор
+        private string text = "Новая задача"; // Текст задачи
+        private bool done = false; // Сделано или нет
+
+        public string ID
+        {
+            get { return id; }
+            init { id = value; }
+        }
+        public string Text
+        {
+            get { return text; }
+            set { text = value; }
+        }
+        public bool Done
+        {
+            get { return done; }
+            set { done = value; }
+        }
 
         public OBJ_Task()
         {
@@ -123,9 +260,20 @@ namespace TaskTracker
     // Класс "Изображение"
     public class OBJ_Image
     {
-        public string ID { get; init; } = Utilities.GetRandomString(6); // Идентификатор
-        public BitmapImage BitmapImage { get; protected set; } // само изображение
+        private string id = Utilities.GetRandomString(6); // Идентификатор
+        private BitmapImage bitmapImage; // Само изображение
         private string base64; // Изображение в кодировке Base64
+
+        public string ID
+        {
+            get { return id; }
+            init { id = value; }
+        }
+        public BitmapImage BitmapImage
+        {
+            get { return bitmapImage; }
+            protected set { bitmapImage = value; }
+        }
         public string Base64 { // То же самое, только при set меняет и BitmapImage
             get
             {
@@ -283,8 +431,8 @@ namespace TaskTracker
             {
                 OBJ_User currentUser = new OBJ_User()
                 {
-                    Username = table.GetAt(i, "username"),
-                    Password = table.GetAt(i, "password")
+                    Username = table.GetAt(i, "username")
+                    //Password = table.GetAt(i, "password")
                 };
                 users.Add(currentUser);
             }
@@ -482,14 +630,14 @@ namespace TaskTracker
             return resultList.ToArray();
         }
 
-        public static bool ADD_User(OBJ_User user)
+        public static bool ADD_User(OBJ_UserWithPassword user)
         {
             if (user == null) { return false; }
             // Делаем массив с компонентами запроса в БД
             List<string> tempStringComponents = new List<string>
             {
                 user.Username,
-                user.Password,
+                user.Password
             };
             // Соединяем всё воедино
             string tempString = String.Join('|', tempStringComponents);
@@ -821,6 +969,20 @@ namespace TaskTracker
         public static string[] KEYS_Users()
         {
             return KEYS("users");
+        }
+        public static OBJ_User[] KEYS_UsersObjects()
+        {
+
+            List<OBJ_User> users = new List<OBJ_User>();
+            foreach (string key in KEYS("users"))
+            {
+                OBJ_User currentUser = new OBJ_User()
+                {
+                    Username = key
+                };
+                users.Add(currentUser);
+            }
+            return users.ToArray();
         }
         public static string[] KEYS_Boards()
         {

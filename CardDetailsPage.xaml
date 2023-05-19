@@ -61,7 +61,7 @@
                     <TextBox x:Name="TextBox_Color" Grid.Column="1" Style="{StaticResource TextBoxStyle_Main}" Height="36" TextChanged="TextBox_Color_TextChanged"></TextBox>
                 </Grid>
                 <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Text="Описание" Style="{StaticResource TextStyle_TextBoxLabel}" VerticalAlignment="Center" Margin="0,0,8,0"></TextBlock>
-                <TextBox x:Name="TextBox_Description" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" AcceptsReturn="True" Text="{Binding Description, Mode = TwoWay}" Style="{StaticResource TextBoxStyle_MainMultiline}" Margin="0,8"></TextBox>
+                <TextBox x:Name="TextBox_Description" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding Description, Mode = TwoWay}" Style="{StaticResource TextBoxStyle_MainMultiline}" Margin="0,8"></TextBox>
                 <Grid Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>

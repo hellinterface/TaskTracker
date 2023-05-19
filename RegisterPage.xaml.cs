@@ -41,7 +41,7 @@ namespace TaskTracker
                 return;
             }
             // Создание объекта
-            OBJ_User user = new OBJ_User()
+            OBJ_UserWithPassword user = new OBJ_UserWithPassword()
             {
                 Username = TextBox_Username.Text,
                 Password = TextBox_Password.Text
@@ -49,7 +49,7 @@ namespace TaskTracker
             bool success = DatabaseCommunicator.ADD_User(user); // Запрос в БД
             if (success)
             {
-                Application.Current.Properties["CurrentUser"] = user;
+                Application.Current.Properties["CurrentUser"] = user as OBJ_User;
                 NavigationService.Navigate(new HomePage()); // Переход на домашнюю страницу
             }
             else

@@ -62,7 +62,7 @@ namespace TaskTracker
         private List<OBJ_User> getUsersFromString(string str)
         {
             List<OBJ_User> result = new List<OBJ_User>();
-            List<OBJ_User> recievedUserList = DatabaseCommunicator.GET_Users("*").ToList(); // обращение в бд
+            List<OBJ_User> recievedUserList = DatabaseCommunicator.KEYS_UsersObjects().ToList(); // обращение в бд
             foreach (var username in str.Split(','))
             {
                 if (username == "*")
