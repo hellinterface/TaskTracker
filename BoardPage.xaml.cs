@@ -23,8 +23,8 @@ namespace TaskTracker
     {
         public OBJ_Board Board { get; }
 
-        public bool IsViewingUser_Owner { get; protected set; } = false;
-        public bool IsViewingUser_CanEdit { get; protected set; } = false;
+        public bool IsViewingUser_Owner { get; protected set; } = false; //истина, если текущий пользователь-владелец
+        public bool IsViewingUser_CanEdit { get; protected set; } = false; //истина, если текущий пользователь может редактировать доску
 
         public BoardPage(OBJ_Board bindedBoardObject)
         {
@@ -34,21 +34,21 @@ namespace TaskTracker
             //  Функция, которая будет выполняться при нажатии на карточку
             //Action<BoardCard, MouseButtonEventArgs> cardClickFunction = CardItem_Click;
 
-            OBJ_User currentUser = Application.Current.Properties["CurrentUser"] as OBJ_User;
+            OBJ_User currentUser = Application.Current.Properties["CurrentUser"] as OBJ_User; // текущий пользователь
 
 
 
-            if (currentUser.Username == Board.Owner.Username) // владелец илии нет
+            if (currentUser.Username == Board.Owner.Username) // владелец или нет
             {
                 IsViewingUser_Owner = true;
                 IsViewingUser_CanEdit = true;
             }
-            else if (Board.UsersCanEdit.FindIndex(entry => (entry.Username == currentUser.Username) || (entry.Username == "*")) >= 0)
+            else if (Board.UsersCanEdit.FindIndex(entry => (entry.Username == currentUser.Username) || (entry.Username == "*")) >= 0) // имеет права на редактирование или нет
             {
                 IsViewingUser_Owner = false;
                 IsViewingUser_CanEdit = true;
             }
-            else
+            else // может только просматривать
             {
                 IsViewingUser_Owner = false;
                 IsViewingUser_CanEdit = false;
@@ -56,13 +56,13 @@ namespace TaskTracker
 
             // Запрос на столбцы
             List<OBJ_Column> allColumns = DatabaseCommunicator.GET_Columns(bindedBoardObject.ID, "*").ToList();
-            allColumns = allColumns.OrderBy(entry => entry.Position).ToList();
+            allColumns = allColumns.OrderBy(entry => entry.Position).ToList(); // сортировка списка столбцов по свойству Position
 
             foreach (var column in allColumns)
             {
-                AddColumn(column);
+                AddColumn(column); // создание элемента столбца
             }
-
+            // блокировка элементов в зависимости от прав пользователя
             if (IsViewingUser_Owner == false)
             {
                 TopButton_AccessSettings.IsEnabled = false;
@@ -133,7 +133,7 @@ namespace TaskTracker
             OnColumnsChange();
             return true;
         }
-
+        // удаление столбца
         public bool DeleteColumn(BoardColumn column)
         {
             bool success = DatabaseCommunicator.DEL_Column(Board, column.ColumnObject);
